@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"ios":{"default":{"projectId":"feliz-note","appId":"1:1043773021761:ios:ec6a35936ad2da896db0c0","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"feliz-note","configurations":{"ios":"1:1043773021761:ios:ec6a35936ad2da896db0c0"}}}}}}

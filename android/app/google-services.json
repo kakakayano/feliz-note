@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1043773021761",
+    "project_id": "feliz-note",
+    "storage_bucket": "feliz-note.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043773021761:android:c1e58a8ba27e98556db0c0",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKYJ8AeGgWMF6HmjKm4giRVEGse6caYLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
