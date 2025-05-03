@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // Providerをインポート
+import '../providers/calendar_provider.dart'; // CalendarProviderをインポート
 import '../widgets/header.dart';
 import '../widgets/footer.dart';
 import '../widgets/calendar_view.dart';
@@ -14,7 +16,6 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   DateTime _focusedDay = DateTime.now(); // 現在の日付
   DateTime? _selectedDay; // 選択された日付
-  final Map<DateTime, List<String>> _events = {}; // 日付ごとの予定を管理
   final TextEditingController _eventController =
       TextEditingController(); // テキストフィールド用コントローラー
 
@@ -24,22 +25,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.dispose();
   }
 
-  void _addEvent() {
-    if (_eventController.text.isEmpty || _selectedDay == null) return;
-
-    setState(() {
-      if (_events[_selectedDay] == null) {
-        _events[_selectedDay!] = [];
-      }
-      _events[_selectedDay]!.add(_eventController.text); // 予定を追加
-      _eventController.clear(); // テキストフィールドをクリア
-    });
-
-    Navigator.pop(context); // モーダルを閉じる
-  }
-
   @override
   Widget build(BuildContext context) {
+    final calendarProvider = Provider.of<CalendarProvider>(
+      context,
+    ); // CalendarProviderを取得
+
     return Scaffold(
       appBar: const Header(title: 'カレンダー'),
       body: Padding(
@@ -59,9 +50,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
             const SizedBox(height: 16),
             EventList(
               selectedDay: _selectedDay,
-              events: _events,
+              events: calendarProvider.events, // CalendarProviderから予定を取得
               eventController: _eventController,
-              onAddEvent: _addEvent,
+              onAddEvent: () {
+                if (_eventController.text.isEmpty || _selectedDay == null)
+                  return;
+
+                calendarProvider.addEvent(
+                  _selectedDay!,
+                  _eventController.text,
+                ); // CalendarProviderに予定を追加
+                _eventController.clear(); // テキストフィールドをクリア
+                Navigator.pop(context); // モーダルを閉じる
+              },
             ),
           ],
         ),
@@ -74,7 +75,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           Navigator.pushReplacementNamed(context, '/tasks'); // タスク管理画面に遷移
         },
         onCalendarPressed: () {
-          Navigator.pushNamed(context, '/calendar'); // カレンダー画面に遷移
+          Navigator.pushReplacementNamed(context, '/calendar'); // カレンダー画面に遷移
         },
       ),
     );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // Providerをインポート
+import '../providers/task_provider.dart'; // TaskProviderをインポート
 import '../widgets/task_list.dart';
 import '../widgets/header.dart';
 import '../widgets/footer.dart';
@@ -11,7 +13,6 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  final List<String> _tasks = [];
   final TextEditingController _taskController = TextEditingController();
 
   @override
@@ -20,7 +21,7 @@ class _TaskScreenState extends State<TaskScreen> {
     super.dispose();
   }
 
-  void _addTask() {
+  void _addTask(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -54,9 +55,10 @@ class _TaskScreenState extends State<TaskScreen> {
                 onPressed: () {
                   final taskName = _taskController.text.trim();
                   if (taskName.isNotEmpty) {
-                    setState(() {
-                      _tasks.add(taskName);
-                    });
+                    Provider.of<TaskProvider>(
+                      context,
+                      listen: false,
+                    ).addTask(taskName); // TaskProviderを使用してタスクを追加
                     _taskController.clear();
                     Navigator.pop(context);
                   }
@@ -72,18 +74,19 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<TaskProvider>(context); // TaskProviderを取得
+
     return Scaffold(
       appBar: Header(title: 'タスク管理'),
       body: TaskList(
-        tasks: _tasks,
+        tasks: taskProvider.tasks, // TaskProviderからタスクを取得
         onDelete: (index) {
-          setState(() {
-            _tasks.removeAt(index);
-          });
+          taskProvider.removeTask(taskProvider.tasks[index]); // タスクを削除
         },
       ),
+
       floatingActionButton: FloatingActionButton(
-        onPressed: _addTask,
+        onPressed: () => _addTask(context), // タスク追加モーダルを開く
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: Footer(
