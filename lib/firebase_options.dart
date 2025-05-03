@@ -58,6 +58,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1043773021761',
     projectId: 'feliz-note',
     storageBucket: 'feliz-note.firebasestorage.app',
-    iosBundleId: 'com.example.frontend',
+    iosBundleId: 'com.example.feliz-note',
   );
 }

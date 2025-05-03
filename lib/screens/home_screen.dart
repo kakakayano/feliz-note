@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/header.dart';
+import '../widgets/footer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -6,14 +8,18 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Welcome')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/tasks'); // タスク画面に遷移
-          },
-          child: const Text('Go to Task Manager'),
-        ),
+      appBar: Header(title: 'ホーム'),
+      body: const Center(child: Text('ホーム画面')),
+      bottomNavigationBar: Footer(
+        onHomePressed: () {
+          Navigator.pushReplacementNamed(context, '/'); // ホーム画面に遷移
+        },
+        onTasksPressed: () {
+          Navigator.pushNamed(context, '/tasks'); // タスク管理画面に遷移
+        },
+        onCalendarPressed: () {
+          Navigator.pushNamed(context, '/calendar'); // カレンダー画面に遷移
+        },
       ),
     );
   }
